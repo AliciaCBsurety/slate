@@ -1,0 +1,67 @@
+#Transaction History 
+
+```shell
+curl "https://knoxsecure.com/api/v1.1/transaction_api/transactions"
+  -X POST \
+  -H "Authorization: API_key:API_Secret" \
+  -H "Content-Type: application/json" \
+  -d '{  "status":"success",  "trans_id":"01", "from":"3186-08-22", "to":"3186-08-22", "page":"0"}'
+```
+
+```php
+<?php
+include KnoxSecure;
+
+$KnoxSecure = new KnoxSecure(API_KEY,API_SECRET);
+$data = [
+  "trans_id"=>"01",
+   "status"=>"pending",
+   "from"=>"3186-08-22",
+   "to"=>"3186-08-22",
+   "page"=>"1",
+];
+
+$response = $KnoxSecure->processPayment($data);
+
+print_r($response);
+?>
+```
+>Success json response:
+
+```json
+{
+    "total_records": "1",            
+    "total_pages": "1",            
+    "current_page": "1",            
+    "result":[
+        {
+        "trans_id": "00001",
+        "amount": "9.99",
+        "status": "success",
+        "is_test": false
+        "order_id": null
+        "card_num": "************1111"
+        "date": "3186-08-22 23:59:59"
+        "first_name": "James"
+        "last_name": "Kirk"
+        }
+    ]
+}
+```
+
+This is the endpoint to retrieve the transaction history.
+
+###HTTP Request Information
+|Category|Value|
+|--------|-----|
+|HTTP Request|POST|
+|URL|https://knoxsecure.com/api/v1.1/transaction_api/transactions|
+
+###Parameters
+|Parameter|Required|Type|Description|
+|---------|--------|----|-----------|
+|trans_id|no|String|Transaction ID|
+|status|no|String|Transaction Status|
+|from|no|String|From Date (yyyy-mm-dd)|
+|to|no|String|To Date (yyyy-mm-dd)|
+|page|no|Integer|Page Number|

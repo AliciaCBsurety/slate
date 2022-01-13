@@ -1,0 +1,57 @@
+#Refund Request
+
+```shell
+curl "https://knoxsecure.com/api/v1.1/payment_api/refund"
+  -X POST \
+  -H "Authorization: API_key:API_Secret" \
+  -H "Content-Type: application/json" \
+  -d '{ "trans_id":"0000001","amount":"4.99"}'
+```
+
+```php
+<?php
+include KnoxSecure;
+
+$KnoxSecure = new KnoxSecure(API_KEY,API_SECRET);
+$data = [
+  "trans_id"=>"0000001",
+  "amount"=>"4.99"
+];
+
+$response = $KnoxSecure->refundPayment($data);
+
+print_r($response);
+?>
+```
+
+>Expected json resonses:
+
+```json
+//Success Response
+{
+  "trans_id": "00001",
+  "amount": "9.28",
+  "status": "success"
+}
+ //Failed Response
+{
+  "trans_id": "00001",
+  "message": "already refunded",
+  "amount": "9.28",
+  "status": "fail"
+}
+```
+
+This is the endpoint to setup refunds.
+
+###HTTP Request Information
+|Category|Value|
+|--------|-----|
+|HTTP Request|POST|
+|URL|https://knoxsecure.com/api/v1.1/payment_api/refund|
+
+###Parameters
+|Parameter|Required|Type|Description|
+|---------|--------|----|-----------|
+|trans_id|yes|String|Valid Transaction Id|
+|amount|yes|Decimal|Amount To Process, Must Match With Order Amount|

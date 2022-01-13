@@ -1,0 +1,31 @@
+#Dropin JS
+
+>Javascript code:
+
+```javascript
+<script type="text/javascript" src="https://knoxsecure.com/js/dropin.js?token=[Your Token]"></script>
+<script>
+   function pay(amount)
+   {
+      KnoxSecure.pay({'amount':[amount]}).then(function(data){
+      alert(JSON.stringify(data,null,2))
+     })
+     .catch(function(error){
+        alert(JSON.stringify(error,null,2))
+     })
+   }
+</script>
+```
+###Add Script Tag
+On the webpage that you want to add the button for, copy and paste our javascript code into where your scripts are
+
+>HTML code for button:
+
+```html
+<div id="wrapper">
+   <button onclick="pay(4.99)">Pay $4.99</button>
+</div>
+```
+###Add HTML 
+Copy and paste the html code where you want the drop-in js button to appear on the webpage.
+

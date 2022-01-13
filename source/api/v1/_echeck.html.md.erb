@@ -1,0 +1,77 @@
+#Process an eCheck Payment 
+
+```shell
+curl "https://knoxsecure.com/api/v1.1/payment_api/echeck"
+  -X POST \
+  -H "Authorization: API_key:API_Secret" \
+  -H "Content-Type: application/json" \
+  -d '{  "first_name":"Sam",  "last_name":"Malone", "billing_address1":"112.5 Beacon Street", "billing_address2":"", "billing_city":"Brighton", "billing_state":"MA","mobile":"", "billing_zip":"02135", "email":"drinking@cheers.com", "routing":"111111111", "account":"111111111", "order_description":"Test Order", "amount":"9.99"}'
+```
+
+```php
+<?php
+include KnoxSecure;
+
+$KnoxSecure = new KnoxSecure(API_KEY,API_SECRET);
+$data = [
+  "first_name"=>"Sam",
+   "last_name"=>"Malone",
+   "billing_address1"=>"112.5 Beacon Street",
+   "billing_address2"=>"",
+   "billing_city"=>"Brighton",
+   "billing_country"=>"US",
+   "billing_state"=>"MA",
+   "billing_zip"=>"02135",
+   "customer_ip"=>$_SERVER['REMOTE_ADDR'],
+   "email" => "drinking@cheers.com",
+   "mobile" => "",
+   "routing_number"=>"111111111",
+   "checking_account_number"=>"111111111",
+   "order_description"=>"Test Order",
+   "amount"=>"9.99"
+];
+
+$response = $KnoxSecure->processPayment($data);
+
+print_r($response);
+?>
+```
+>Success json response:
+
+```json
+{
+    "status": "pending",
+    "message": "",
+    "transaction_id": "00001",
+    "amount": "9.99"
+}
+```
+
+This is the endpoint to process eCheck payments 
+
+###HTTP Request Information
+|Category|Value|
+|--------|-----|
+|HTTP Request|POST|
+|URL|https://knoxsecure.com/api/v1.1/payment_api/echeck|
+
+###Parameters
+|Parameter|Required|Type|Description|
+|---------|--------|----|-----------|
+|first_name|yes|String|First Name|
+|last_name|yes|String|Last Name|
+|billing_address1|yes|String|Valid Address Line 1|
+|billing_address2|no|String|Address Line 2|
+|billing_city|yes|String|City|
+|billing_country|no|String|Default is US, 2 character only|
+|billing_state|yes|String|State Short Code|
+|billing_zip|yes|amount|Zip|
+|customer_ip|yes|String|Ip Address of Customer|
+|email|yes|String|Valid Email Address|
+|mobile|yes|String|Valid Mobile Number|
+|amount|yes|Decimal|Amount To Process, Must Match With Order Amount|
+|routing_number|yes|String|Rounting Number|
+|checking_account_number|yes|String	Account Number|
+|order_description|yes|String|Order Description|
+
+<aside class="success"> Remember — You must pass Authorization header. </aside>

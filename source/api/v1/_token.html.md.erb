@@ -1,0 +1,140 @@
+#Payment Token 
+
+```shell
+curl "https://knoxsecure.com/api/v1.1/payment_api/create-token"
+  -X POST \
+  -H "Authorization: API_key:API_Secret" \
+  -H "Content-Type: application/json" \
+  -d '{  "first_name":"Bruce", "last_name":"Wayne", "email":"not@batman.com", "mobile":"8042221111", "billing_address1":"1007 Mountain Drive", "billing_address2":"", "billing_city":"Gotham City", "billing_state":"NY", "billing_zip":"11368",  "order_description":"EYU314","customer_ip"=>"127.0.0.1" }'
+```
+
+```php
+<?php
+include KnoxSecure;
+
+$KnoxSecure = new KnoxSecure(API_KEY,API_SECRET);
+$data = [
+  "first_name"=>"Bruce",
+   "last_name"=>"Wayne",
+   "email"=>"not@batman.com",
+   "mobile"=>"8042221111",
+   "billing_address1"=>"1007 Mountain Drive",
+   "billing_address2"=>"",
+   "billing_city"=>"Gotham City",
+   "billing_state"=>"NY",
+   "billing_zip"=>"11368",
+   "customer_ip"=>$_SERVER['REMOTE_ADDR'],
+   "card_no"=>"4111111111111111",
+   "card_cvv"=>"123",
+   "expiry_month"=>"07",
+   "expiry_year"=>"2025"
+];
+
+$response = $KnoxSecure->createToken($data);
+
+print_r($response);
+?>
+```
+
+>Success json response:
+
+```json
+
+{
+    "status": "success",
+    "token": "11AC11E1-1A1A-91190E4616F01081C54EAC16D053D3EC"
+}
+```
+
+This endpoint to create payment token.
+
+###HTTP Request Information
+|Category|Value|
+|--------|-----|
+|HTTP Request|POST|
+|URL|https://knoxsecure.com/api/v1.1/payment_api/create-token|
+
+###Parameters
+|Parameter|Required|Type|Description|
+|---------|--------|----|-----------|
+|first_name|yes|String|First Name|
+|last_name|yes|String|Last Name|
+|billing_address1|yes|String|Valid Address Line 1|
+|billing_address2|no|String|Address Line 2|
+|billing_city|yes|String|City|
+|billing_country|no|String|Default is US, 2 character only|
+|billing_state|yes|String|State Short Code|
+|billing_zip|yes|amount|Zip|
+|customer_ip|yes|String|Ip Address of Customer|
+|email|yes|String|Valid Email Address|
+|mobile|yes|String|Valid Mobile Number|
+|amount|yes|Decimal|Amount To Process, Must Match With Order Amount|
+|card_no|yes|Integer|Card No|
+|card_cvv|yes|Integer|Card Security Code|
+|expiry_month|yes|Integer|2 Digit Month e,g "06"|
+|expiry_year|yes|Integer|4 Digit Year e,g "2022"|
+
+<aside class="success"> Remember — You must pass Authorization header. </aside>
+
+##Process Payment with Token 
+```shell
+curl "https://knoxsecure.com/api/v1.1/payment_api/token-payment"
+  -X POST \
+  -H "Authorization: API_key:API_Secret" \
+  -H "Content-Type: application/json" \
+  -d '{  "token":"11AC11E1-1A1A-91190E4616F01081C54EAC16D053D3EC", "order_description":"EYU314","customer_ip"=>"127.0.0.1" "amount":"59.99"}'
+```
+
+```php
+<?php
+include KnoxSecure;
+
+$KnoxSecure = new KnoxSecure(API_KEY,API_SECRET);
+$data = [
+  "token"=>"11AC11E1-1A1A-91190E4616F01081C54EAC16D053D3EC",
+   "customer_ip"=>$_SERVER['REMOTE_ADDR'],
+   "order_description"=>"EYU314",
+   "amount"=>"59.99"
+];
+
+$response = $KnoxSecure->processTokenPayment($data);
+
+print_r($response);
+?>
+```
+>Expected json responses:
+
+```json
+//Success Response
+{
+    "status": "success",
+    "message": "",
+    "descriptor":"",
+    "transaction_id": "00001",
+    "amount": "59.99"
+}
+ //Failed Response
+{
+    "status": "fail",
+    "descriptor":"",
+    "message": "It did not pass 2-Party limitation",
+    "transaction_id": "00001",
+    "amount": "59.99"
+}
+```
+
+###HTTP Request Information
+|Category|Value|
+|--------|-----|
+|HTTP Request|POST|
+|URL|https://knoxsecure.com/api/v1.1/payment_api/token-payment|
+
+###Parameters
+|Parameter|Required|Type|Description|
+|---------|--------|----|-----------|
+|token|yes|String|Valid Token|
+|customer_ip|yes|String|Ip Address of Customer|
+|amount|yes|Decimal|Amount To Process. Must Match With Order Amount|
+|order_description|yes|String|Valid Order Id Or Order Description|
+
+<aside class="success"> Remember — You must pass Authorization header. </aside>
